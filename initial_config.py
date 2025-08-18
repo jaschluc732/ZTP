@@ -18,14 +18,14 @@ def main():
         # Example: Set hostname based on serial number (or other unique identifier)
         # This assumes the script knows how to derive the desired hostname
         # For a real-world scenario, you might fetch this from a central source
-        hostname = "Arista-Switch-001" # Replace with logic to determine hostname
-        cli.run_commands(["configure terminal", f"hostname {hostname}", "end"])
+        #hostname = "Arista-Switch-001" # Replace with logic to determine hostname
+        #cli.run_commands(["configure terminal", f"hostname {hostname}", "end"])
 
         # Example: Configure management interface
         cli.run_commands([
             "configure terminal",
             "interface Management1",
-            "ip address 192.168.1.10/24", # Replace with your IP address
+            "ip address dhcp", # Replace with your IP address
             "no shutdown",
             "end"
         ])
@@ -33,7 +33,7 @@ def main():
         # Example: Configure default route
         cli.run_commands([
             "configure terminal",
-            "ip route 0.0.0.0/0 192.168.1.1", # Replace with your default gateway
+            "ip route 0.0.0.0/0 192.168.5.1", # Replace with your default gateway
             "end"
         ])
 

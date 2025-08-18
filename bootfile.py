@@ -5,17 +5,17 @@ import requests
 import hashlib
 
 # ZTP Server URL for retrieving configuration
-ZTP_SERVER_URL = "http://your_ztp_server_ip:your_ztp_server_port/get_config"
+ZTP_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/configs"
 
 # EOS Image Server URL for downloading images
-EOS_IMAGE_SERVER_URL = "http://your_image_server_ip/images"
+EOS_IMAGE_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/images"
 
 # Desired EOS image filename
 DESIRED_EOS_IMAGE = "EOS-4.28.3M.swi"
 
 # Known-good checksum for the desired EOS image (replace with the actual value from Arista website)
 # For example, using SHA256 (recommended over MD5 for better security)
-KNOWN_EOS_CHECKSUM = "your_sha256_checksum_here"  # <<<<<<<<<< IMPORTANT: Replace this
+KNOWN_EOS_CHECKSUM = "a87e405430bff3e30d4d607cf37fcd30 EOS-4.34.2F.swi"  # <<<<<<<<<< IMPORTANT: Replace this
 
 # --- Obtain Switch Information (as before) ---
 try:

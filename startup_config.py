@@ -2,9 +2,7 @@
 
 import os
 import sys
-
-# Arista EOS CLI library
-from AristaPy.eossdk import Cli
+import cli
 
 def main():
     # Initialize the CLI object

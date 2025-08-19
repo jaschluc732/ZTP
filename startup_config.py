@@ -37,6 +37,15 @@ def main():
             "end"
         ])
 
+        cli.run_commands([
+            "banner login",
+            "****************************************************************",
+            "  Warning: unauthorized access will be reported to authorities",
+            "****************************************************************",
+            "EOF",
+            "end"
+        ])
+
         # Example: Copy a more comprehensive configuration from a remote server
         # This is a common ZTP pattern: a small script fetches the main config
         # cli.run_commands(["copy scp://user:password@10.0.0.1/path/to/full_config.cfg running-config"])
@@ -48,8 +57,13 @@ def main():
         cli.run_commands(["write memory"])
 
         # Log completion (optional)
-        # with open("/mnt/flash/ztp_log.txt", "a") as f:
-        #     f.write("ZTP script completed successfully.\n")
+
+        cli.run_commands(["copy tftp://192.168.4.199/vEOS-lab-4.34.2F.swi flash:vEOS-lab-4.34.2F.swi"])
+
+        cli.run_commands([
+            "configure terminal",
+            "boot system flash:vEOS-lab-4.34.2F.swi"
+        ])
 
     except Exception as e:
         # Log any errors

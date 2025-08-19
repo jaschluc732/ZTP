@@ -6,7 +6,7 @@ import hashlib
 import sys
 
 # ZTP Server URL for retrieving configuration
-ZTP_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/initialconfig.cfg"
+ZTP_SERVER_URL = "tftp://192.168.4.199"/initialconfig.cfg"
 
 # EOS Image Server URL for downloading images
 EOS_IMAGE_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/images"

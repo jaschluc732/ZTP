@@ -5,63 +5,8 @@ import requests
 import hashlib
 import sys
 
-# Arista EOS CLI library
-from AristaPy.eossdk import Cli
-
-# Initialize the CLI object
-cli = Cli()
-
-# Log file for debugging (optional)
-# with open("/mnt/flash/ztp_log.txt", "a") as f:
-#     f.write("ZTP script started at: " + str(os.path.getmtime("/mnt/flash/ztp_script.py")) + "\n")
-
-try:
-    # Example: Set hostname based on serial number (or other unique identifier)
-    # This assumes the script knows how to derive the desired hostname
-    # For a real-world scenario, you might fetch this from a central source
-    #hostname = "Arista-Switch-001" # Replace with logic to determine hostname
-    #cli.run_commands(["configure terminal", f"hostname {hostname}", "end"])
-
-    # Example: Configure management interface
-    cli.run_commands([
-        "configure terminal",
-        "interface Management1",
-        "ip address dhcp", # Replace with your IP address
-        "no shutdown",
-        "end"
-    ])
-
-    # Example: Configure default route
-    cli.run_commands([
-        "configure terminal",
-        "ip route 0.0.0.0/0 192.168.5.1", # Replace with your default gateway
-        "end"
-    ])
-
-    # Example: Copy a more comprehensive configuration from a remote server
-    # This is a common ZTP pattern: a small script fetches the main config
-    # cli.run_commands(["copy scp://user:password@10.0.0.1/path/to/full_config.cfg running-config"])
-
-    # Example: Install an EOS extension (if needed)
-    # cli.run_commands(["extension \"http://server/path/to/extension.rpm\"", "extension activate extension.rpm"])
-
-    # Save the running configuration to startup-config
-    cli.run_commands(["write memory"])
-
-    # Log completion (optional)
-
-
-    # with open("/mnt/flash/ztp_log.txt", "a") as f:
-    #     f.write("ZTP script completed successfully.\n")
-
-except Exception as e:
-    # Log any errors
-    # with open("/mnt/flash/ztp_log.txt", "a") as f:
-    #     f.write(f"ZTP script error: {e}\n")
-    sys.exit(1) # Indicate failure
-
 # ZTP Server URL for retrieving configuration
-ZTP_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/configs"
+ZTP_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/initialconfig.cfg"
 
 # EOS Image Server URL for downloading images
 EOS_IMAGE_SERVER_URL = "tftp://192.168.4.199"/srv/tftp/images"
@@ -73,16 +18,9 @@ DESIRED_EOS_IMAGE = "EOS-4.34.2F.swi"
 # For example, using SHA256 (recommended over MD5 for better security)
 KNOWN_EOS_CHECKSUM = "2a6d868f979cccb085fe92c7732ab4af vEOS-lab-4.34.2F.swi"  # <<<<<<<<<< IMPORTANT: Replace this
 
-# --- Obtain Switch Information (as before) ---
-try:
-    with open('/mnt/flash/Switches/my_serial_number.txt', 'r') as f:
-        serial_number = f.read().strip()
-except FileNotFoundError:
-    serial_number = "UNKNOWN"
-
 # --- Request Configuration from ZTP Server (as before) ---
 try:
-    response = requests.get(f"{ZTP_SERVER_URL}?serial_number={serial_number}")
+    response = requests.get(f"{ZTP_SERVER_URL}")
     response.raise_for_status()
     config_data = response.text
 except requests.exceptions.RequestException as e:

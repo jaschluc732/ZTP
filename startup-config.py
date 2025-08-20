@@ -1,7 +1,20 @@
-configuration terminal
-interface management 1
-ip address dhcp
-no shutdown
-ip route 0.0.0.0/0 192.168.5.1
-boot system flash: vEOS-lab-4.34.2F.swi
-write memory
+#!/usr/bin/env python
+
+
+import os
+import requests
+import hashlib
+import sys
+
+# Install startup config
+#os.system(f"FastCli -p 15 -c 'copy tftp://192.168.4.199/startup-config flash:startup-config'")
+
+#print("Downloading EOS now")
+os.system(f"FastCli -p 15 -c 'copy tftp://192.168.4.199/vEOS-lab-4.34.2F.swi flash:'")
+
+#os.system(f"FastCli -p 15 -c 'install image flash:vEOS-lab-4.34.2F.swi'")
+#os.system(f"FastCli -p 15 -c 'boot system flash:vEOS-lab-4.34.2F.swi'")
+#print("EOS image installation and boot system update commands executed.")
+#os.system(f"FastCli -p 15 -c 'write memory'")
+
+os.system("FastCli -p 15 -c 'reload now'")

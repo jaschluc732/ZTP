@@ -3,11 +3,11 @@ interface management 1
 ip address dhcp
 no shutdown
 ip route 0.0.0.0/0 192.168.5.1
-banner login c
+banner login c^
 ********************************************************
 
  This system is being monitored by Zoltan, any abuse
  will be reported to his leader!
 
 *********************************************************
-c
+c^

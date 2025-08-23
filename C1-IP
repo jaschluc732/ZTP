@@ -1,0 +1,10 @@
+!
+int loop0
+ip address 192.168.30.1/32
+!
+int eth1
+description to PE1-E3
+no switchport
+ip address 192.168.31.2/30
+no shut
+!

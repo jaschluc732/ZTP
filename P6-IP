@@ -1,0 +1,30 @@
+!
+int loop0
+ip address 192.168.100.6/32
+isis enable isis
+!
+int eth1
+description to P5-E2
+no switchport
+ip address 172.16.56.6/24
+mtu 1500
+isis enable isis
+
+no shut
+!
+int eth2
+description to PE2-E6
+no switchport
+ip address 172.16.26.6/24
+mtu 1500
+isis enable isis
+
+no shut
+!
+ip routing
+!
+Router isis isis
+   Net 49.0000.0000.0000.0006.00
+   Is-type level-1
+   Address-family ipv4 unicast
+!

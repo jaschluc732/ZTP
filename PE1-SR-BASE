@@ -1,0 +1,11 @@
+!
+router isis isis
+      address-family ipv4 unicast
+      segment-routing mpls
+      router-id 192.168.100.1
+      no shut
+      exit
+!
+int lo0
+node-segment ipv4 index 1
+!

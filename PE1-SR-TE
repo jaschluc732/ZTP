@@ -1,0 +1,19 @@
+!
+router traffic-engineering
+      segment-routing
+      router-id ipv4 192.168.100.1
+!
+router isis isis
+      traffic-engineering
+      is-type level-1
+      no shut
+!
+int e4
+      traffic-engineering
+!
+int e5
+      traffic-engineering
+!
+int e6
+      traffic-engineering`
+!

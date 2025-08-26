@@ -15,5 +15,32 @@ int e5
       traffic-engineering
 !
 int e6
-      traffic-engineering`
+      traffic-engineering
 !
+Router traffic-engineering
+ Segment-routing
+     Policy endpoint 192.168.12.2 color 10
+         Binding-sid 1000010
+         path-group preference 100
+             segment-list label-stack 900003 900002
+!
+Router traffic-engineering
+ Segment-routing
+     Policy endpoint 192.168.22.2 color 20
+         Binding-sid 1000020
+         path-group preference 100
+             segment-list label-stack 900004 900002
+!
+Router traffic-engineering
+ Segment-routing
+     Policy endpoint 192.168.100.2 color 10
+         Binding-sid 1000012
+         path-group preference 100
+             segment-list label-stack 900003 900002
+!
+Router traffic-engineering
+ Segment-routing
+     Policy endpoint 192.168.100.2 color 20
+         Binding-sid 1000022
+         path-group preference 100
+             segment-list label-stack 900004 900002

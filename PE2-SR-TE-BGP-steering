@@ -1,0 +1,46 @@
+!
+router traffic-engineering
+    segment-routing
+      rib system-colored-tunnel-rib
+!
+router bgp 65100
+    neighbor remote-as 65100
+    neighbor 192.168.100.1 update-source loopback 0
+    neighbor 192.168.100.1 next-hop-self
+    neighbor 192.168.100.1 send-community extended
+    redistribute static
+    redistribute connected
+    no bgp default ipv4-unicast
+!
+!
+ip route 192.168.10.2/32 192.168.12.2
+ip route 192.168.20.2/32 192.168.22.2
+ip route 192.168.30.2/32 192.168.32.2
+!
+
+ip prefix-list A seq 10 permit 192.168.10.0/24 le 32
+ip prefix-list A seq 20 permit 192.168.11.0/24 le 32
+ip prefix-list A seq 30 permit 192.168.12.0/24 le 32
+!
+ip prefix-list B seq 10 permit 192.168.20.0/24 le 32
+ip prefix-list B seq 20 permit 192.168.21.0/24 le 32
+ip prefix-list B seq 30 permit 192.168.22.0/24 le 32
+!
+ip prefix-list C seq 10 permit 192.168.30.0/24 le 32
+ip prefix-list C seq 20 permit 192.168.31.0/24 le 32
+ip prefix-list C seq 30 permit 192.168.32.0/24 le 32
+!
+!
+route-map sr-policy permit 10
+  match ip address prefix-list A
+  set extcommunity color 10 additive
+!
+route-map sr-policy permit 20
+  match ip address prefix-list B
+  set extcommunity color 20 additive
+!
+route-map sr-policy permit 30
+  match ip address prefix-list C
+  set extcommunity color 30 additive
+!
+route-map sr-policy permit 99999

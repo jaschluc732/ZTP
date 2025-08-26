@@ -8,3 +8,4 @@ no switchport
 ip address 192.168.12.2/30
 no shut
 !
+ip route 0.0.0.0/0 192.168.12.1

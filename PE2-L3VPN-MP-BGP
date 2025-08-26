@@ -20,11 +20,20 @@ vrf Cust-B
   mtu 1500
   no shut
 !
+interface Ethernet1
+    no switchport
+    vrf Cust-A
+    ip address 192.168.12.1/30
+!
+interface Ethernet2
+    no switchport
+    vrf Cust-B
+    ip address 192.168.22.1/30
 !
 mpls ip
 !
 ip prefix-list ldp-fec-prefix-list
-  permit 192.168.100.0/24 ge 24
+  permit 192.168.100.0/16 ge 24
 !
 #shut ldp
 mpls ldp

@@ -47,6 +47,16 @@ no shut
 !
 ip routing
 !
+mpls ip
+!
+ip prefix-list ldp-fec-prefix-list
+  permit 192.168.100.0/24 ge 24
+!
+mpls ldp
+  router-id interface lo0
+  fec filter prefix-list ldp-fec-prefix-list
+  no shut
+!
 Router isis isis
    Net 49.0000.0000.0000.0002.00
    Is-type level-1

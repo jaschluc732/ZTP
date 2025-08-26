@@ -8,4 +8,14 @@ no switchport
 ip address 192.168.12.2/30
 no shut
 !
+mpls ip
+!
+ip prefix-list ldp-fec-prefix-list
+  permit 192.168.100.0/24 ge 24
+!
+mpls ldp
+  router-id interface lo0
+  fec filter prefix-list ldp-fec-prefix-list
+  no shut
+!
 ip route 0.0.0.0/0 192.168.12.1

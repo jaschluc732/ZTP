@@ -10,6 +10,8 @@ vrf instance Cust-A
     route-target import evpn 65001:10
     ip routing vrf Cust-A
     ip route vrf Cust-A 192.168.10.1 192.168.11.2
+    redistribute connected
+    redistribute static
 !
 vrf instance Cust-B
   rd 65001:20
@@ -17,6 +19,8 @@ vrf instance Cust-B
     route-target import evpn 65001:20
     ip routing vrf Cust-B
     ip route vrf Cust-B 192.168.20.1 192.168.21.2
+    redistribute connected
+    redistribute static
 !
 vrf Cust-A
   ip address 192.168.11.1/30

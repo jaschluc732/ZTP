@@ -1,0 +1,106 @@
+
+
+vlan 30
+  name Cust-C
+!
+vrf instance Cust-A
+  rd 65001:10
+    route-target export evpn 65001:10
+    route-target import evpn 65001:10
+    ip routing vrf Cust-A
+    ip route vrf Cust-A 192.168.10.2 192.168.12.2
+!
+vrf instance Cust-B
+  rd 65001:20
+    route-target export evpn 65001:20
+    route-target import evpn 65001:20
+    ip routing vrf Cust-B
+    ip route vrf Cust-B 192.168.20.2 192.168.22.2
+!
+vrf Cust-A
+  ip address 192.168.12.1/30
+  mtu 1500
+  no shut
+!
+vrf Cust-B
+  ip address 192.168.22.1/30
+  mtu 1500
+  no shut
+!
+interface Ethernet1
+    no switchport
+    vrf Cust-A
+    ip address 192.168.12.1/30
+!
+interface Ethernet2
+    no switchport
+    vrf Cust-B
+    ip address 192.168.22.1/30
+!
+int eth3
+ switchport
+ switchport access vlan 30
+!
+
+mpls ip
+!
+ip prefix-list ldp-fec-prefix-list
+  permit 192.168.100.0/16 ge 24
+!
+#shut ldp
+mpls ldp
+  router-id interface lo0
+  fec filter prefix-list ldp-fec-prefix-list
+  shut
+!
+router traffic-engineering
+    segment-routing
+      rib system-colored-tunnel-rib
+!
+router bgp 65100
+    neighbor remote-as 65100
+    neighbor 192.168.100.1 update-source loopback 0
+    neighbor 192.168.100.1 next-hop-self
+    neighbor 192.168.100.1 send-community extended
+    redistribute static
+    redistribute connected
+    no bgp default ipv4-unicast
+    !
+    address-family evpn
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+      neighbor 192.168.100.1 activate
+    !
+    vlan 30
+      rd 192.168.100.2:30
+      route-target export 30:30
+      route-target import 30:30
+      redistribute learned
+      redistribute static
+
+!
+ip prefix-list A seq 10 permit 192.168.10.0/24 le 32
+ip prefix-list A seq 20 permit 192.168.11.0/24 le 32
+ip prefix-list A seq 30 permit 192.168.12.0/24 le 32
+!
+ip prefix-list B seq 10 permit 192.168.20.0/24 le 32
+ip prefix-list B seq 20 permit 192.168.21.0/24 le 32
+ip prefix-list B seq 30 permit 192.168.22.0/24 le 32
+!
+ip prefix-list C seq 10 permit 192.168.30.0/24 le 32
+ip prefix-list C seq 20 permit 192.168.31.0/24 le 32
+ip prefix-list C seq 30 permit 192.168.32.0/24 le 32
+!
+!
+route-map sr-policy permit 10
+  match ip address prefix-list A
+  set extcommunity color 10 additive
+!
+route-map sr-policy permit 20
+  match ip address prefix-list B
+  set extcommunity color 20 additive
+!
+route-map sr-policy permit 30
+  match ip address prefix-list C
+  set extcommunity color 30 additive
+!
+route-map sr-policy permit 99999
